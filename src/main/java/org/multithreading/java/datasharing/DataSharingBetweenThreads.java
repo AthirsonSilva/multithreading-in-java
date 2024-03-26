@@ -1,4 +1,4 @@
-package org.multithreading.java.dataSharing;
+package org.multithreading.java.datasharing;
 
 public class DataSharingBetweenThreads {
   public static void main(String[] args) throws InterruptedException {
