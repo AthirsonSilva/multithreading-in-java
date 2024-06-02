@@ -1,10 +1,10 @@
-package org.multithreading.java.io;
+package org.multithreading.java.iobound;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class IoBoundApplicationV2 {
-    private static final int NUMBER_OF_TASKS = 10_000;
+public class IoBoundApplication {
+    private static final int NUMBER_OF_TASKS = 1000;
 
     public static void main(String[] args) {
         System.out.printf("Running %d tasks\n", NUMBER_OF_TASKS);
@@ -15,17 +15,10 @@ public class IoBoundApplicationV2 {
     }
 
     private static void performTasks() {
-        try (ExecutorService executorService = Executors.newFixedThreadPool(1000)) {
+        try (ExecutorService executorService = Executors.newCachedThreadPool()) {
 
             for (int i = 0; i < NUMBER_OF_TASKS; i++) {
-                executorService.submit(new Runnable() {
-                    @Override
-                    public void run() {
-                        for (int j = 0; j < 100; j++) {
-                            blockingIoOperation();
-                        }
-                    }
-                });
+                executorService.submit(() -> blockingIoOperation());
             }
         }
     }
@@ -34,7 +27,7 @@ public class IoBoundApplicationV2 {
     private static void blockingIoOperation() {
         System.out.println("Executing a blocking task from thread: " + Thread.currentThread());
         try {
-            Thread.sleep(10);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
